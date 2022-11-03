@@ -4,7 +4,11 @@ import type { AWS } from '@serverless/typescript';
 const serverlessConfiguration: AWS = {
   service: 'certificateignite',
   frameworkVersion: '3',
-  plugins: ['serverless-esbuild', 'serverless-offline'],
+  plugins: [
+    'serverless-esbuild', 
+    'serverless-dynamodb-local',
+    'serverless-offline'
+  ],
   provider: {
     name: 'aws',
     runtime: 'nodejs14.x',
@@ -20,12 +24,12 @@ const serverlessConfiguration: AWS = {
   // import the function via paths
   functions: {
     hello: {
-      handler: "src/functions/hello.handler",
+      handler: "src/functions/generateCertificate.handler",
       events: [
         {
           http: {
-             path: "hello",
-             method: "get",
+             path: "generateCertificate",
+             method: "post",
 
              cors: true
           }
@@ -45,6 +49,14 @@ const serverlessConfiguration: AWS = {
       platform: 'node',
       concurrency: 10,
     },
+    dynamodb: {
+      stages: ["dev", "local"],
+      start: {
+        port: 8000,
+        inMemory: true,
+        migrate:true
+      }
+    }
   },
   resources: {
     Resources: {
