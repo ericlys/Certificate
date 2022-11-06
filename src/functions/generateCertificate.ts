@@ -67,7 +67,11 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 
   const content = await compileTemplate(data)
 
-  const browser = await chromium.puppeteer.launch();
+  const browser = await chromium.puppeteer.launch({
+      args: chromium.args,
+      defaultViewport: chromium.defaultViewport,
+      executablePath: await chromium.executablePath,
+  });
 
   const page = await browser.newPage();
   await page.setContent(content);
