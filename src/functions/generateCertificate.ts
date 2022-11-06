@@ -53,7 +53,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
       }
     }).promise()
   }
-
+  
   const medalPath = join(process.cwd(), "src", "templates", "selo.png");
   const medal = readFileSync(medalPath, "base64")
 
@@ -82,8 +82,6 @@ export const handler: APIGatewayProxyHandler = async (event) => {
       preferCSSPageSize: true,
       path: process.env.IS_OFFLINE ? "./certificate.pdf" : null
   });
-
-  browser.close();
 
   await browser.close();
 
